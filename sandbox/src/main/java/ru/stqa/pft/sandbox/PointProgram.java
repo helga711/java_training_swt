@@ -13,6 +13,6 @@ public class PointProgram {
     }
 
     public static double distance(Point p1, Point p2){
-        return Math.sqrt(MatExt.square(p2.x - p1.x) + MatExt.square(p2.y - p1.y));
+        return Math.sqrt(MathExt.square(p2.x - p1.x) + MathExt.square(p2.y - p1.y));
     }
 }

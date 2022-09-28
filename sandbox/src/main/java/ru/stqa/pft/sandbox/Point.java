@@ -15,6 +15,10 @@ public class Point {
     }
 
     public double distance(Point p){
-        return Math.sqrt(MatExt.square(p.x - this.x) + MatExt.square(p.y - this.y));
+        double x1 = p.x - this.x;
+        double x2 = p.y - this.y;
+        double v = MathExt.square(x1) + MathExt.square(x2);
+        double sqrt = Math.sqrt(v);
+        return sqrt;
     }
 }
