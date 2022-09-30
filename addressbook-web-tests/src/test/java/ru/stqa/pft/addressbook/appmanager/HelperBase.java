@@ -30,4 +30,8 @@ public class HelperBase {
             return false;
         }
     }
+
+    protected void acceptAlert() {
+        driver.switchTo().alert().accept();
+    }
 }
