@@ -10,15 +10,19 @@ public class NavigationHelper extends HelperBase {
 
     public void goToGroupPage() {
         if (isElementPresent(By.tagName("h1"))
-                && driver.findElement(By.tagName("h1")).getText().equals("Groups")
+                && getText(By.tagName("h1")).equals("Groups")
                 && isElementPresent(By.name("new"))) {
             return;
         }
-
         click(By.linkText("groups"));
     }
 
     public void goToNewContactPage() {
+        if (isElementPresent(By.tagName("h1"))
+                && getText(By.tagName("h1")).equals("Edit / add address book entry")
+                && isElementPresent(By.name("submit"))) {
+            return;
+        }
         click(By.linkText("add new"));
     }
 }

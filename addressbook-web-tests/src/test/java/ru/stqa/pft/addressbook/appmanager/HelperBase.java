@@ -27,6 +27,10 @@ public class HelperBase {
         }
     }
 
+    protected String getText(By locator) {
+        return driver.findElement(locator).getText();
+    }
+
     protected boolean isAlertPresent() {
         try {
             driver.switchTo().alert();

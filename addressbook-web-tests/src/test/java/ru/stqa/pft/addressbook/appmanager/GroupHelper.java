@@ -41,7 +41,7 @@ public class GroupHelper extends HelperBase {
     }
 
     public void selectGroup() {
-        click(By.xpath("//input[@type='checkbox']"));
+        click(By.name("selected[]"));
     }
 
     public void createGroup(GroupData groupData) {
@@ -52,6 +52,6 @@ public class GroupHelper extends HelperBase {
     }
 
     public boolean isThereAGroup() {
-        return isElementPresent(By.xpath("//input[@type='checkbox']"));
+        return isElementPresent(By.name("selected[]"));
     }
 }
