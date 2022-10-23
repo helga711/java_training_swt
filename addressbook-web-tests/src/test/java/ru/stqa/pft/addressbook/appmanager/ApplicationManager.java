@@ -1,7 +1,11 @@
 package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.Browser;
 
 public class ApplicationManager {
     private static WebDriver driver;
@@ -9,9 +13,24 @@ public class ApplicationManager {
     private GroupHelper groupHelper;
     private SessionHelper sessionHelper;
     private ContactHelper contactHelper;
+    private String browser;
+
+    public ApplicationManager(String browserName) {
+        this.browser = browserName;
+    }
 
     public void init() {
-        driver = new FirefoxDriver();
+        if (browser.equals(Browser.FIREFOX.browserName())) {
+            driver = new FirefoxDriver();
+        }
+        else if (browser.equals(Browser.CHROME.browserName())) {
+            driver = new ChromeDriver();
+        }
+        else if (browser.equals(Browser.EDGE.browserName())) {
+            EdgeOptions edgeOptions = new EdgeOptions();
+            edgeOptions.addArguments("--no-sandbox");
+            driver = new EdgeDriver(edgeOptions);
+        }
         driver.get("http://localhost/addressbook/");
         getSessionHelper().login("admin", "secret");
     }
