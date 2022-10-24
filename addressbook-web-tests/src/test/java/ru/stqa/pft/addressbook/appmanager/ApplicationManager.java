@@ -7,6 +7,8 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.Browser;
 
+import java.time.Duration;
+
 public class ApplicationManager {
     private static WebDriver driver;
     private NavigationHelper navigationHelper;
@@ -31,6 +33,7 @@ public class ApplicationManager {
             edgeOptions.addArguments("--no-sandbox");
             driver = new EdgeDriver(edgeOptions);
         }
+        driver.manage().timeouts().implicitlyWait(Duration.ZERO);
         driver.get("http://localhost/addressbook/");
         getSessionHelper().login("admin", "secret");
     }

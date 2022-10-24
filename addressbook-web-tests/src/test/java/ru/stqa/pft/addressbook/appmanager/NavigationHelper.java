@@ -25,4 +25,8 @@ public class NavigationHelper extends HelperBase {
         }
         click(By.linkText("add new"));
     }
+
+    public void goToBaseURL() {
+        driver.get("http://localhost/addressbook/");
+    }
 }
