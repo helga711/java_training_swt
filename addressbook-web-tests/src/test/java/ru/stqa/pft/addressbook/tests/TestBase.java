@@ -9,13 +9,20 @@ import ru.stqa.pft.addressbook.appmanager.ApplicationManager;
 
 public class TestBase {
 
-    protected final ApplicationManager app = new ApplicationManager(Browser.FIREFOX.browserName());
+    static final String browser = Browser.CHROME.browserName();
+    protected final ApplicationManager app = new ApplicationManager(browser);
 
     @BeforeSuite
     static void setupClass() {
-        WebDriverManager.chromedriver().setup();
-        WebDriverManager.firefoxdriver().setup();
-        WebDriverManager.edgedriver().setup();
+        if (browser.equals(Browser.FIREFOX.browserName())) {
+            WebDriverManager.firefoxdriver().setup();
+        }
+        else if (browser.equals(Browser.CHROME.browserName())) {
+            WebDriverManager.chromedriver().setup();
+        }
+        else if (browser.equals(Browser.EDGE.browserName())) {
+            WebDriverManager.edgedriver().setup();
+        }
     }
 
     @BeforeMethod
