@@ -38,8 +38,8 @@ public class ContactHelper extends HelperBase{
         driver.findElements(By.name("selected[]")).get(index).click();
     }
 
-    public void initContactModification() {
-        click(By.xpath("//img[@title='Edit']"));
+    public void initContactModification(int index) {
+        driver.findElements(By.xpath("//img[@title='Edit']")).get(index).click();
     }
 
     public void submitContactModification() {

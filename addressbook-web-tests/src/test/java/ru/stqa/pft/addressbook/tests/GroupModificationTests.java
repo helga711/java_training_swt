@@ -25,6 +25,7 @@ public class GroupModificationTests extends TestBase{
         List<GroupData> after = app.getGroupHelper().getGroupList();
         Assert.assertEquals(after.size(), before.size(), "Groups' quantity is invalid after modification of the group.");
 
+        groupData.setId(before.get(before.size() - 1).getId());
         before.remove(before.size() - 1);
         before.add(groupData);
         Comparator<GroupData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
