@@ -1,10 +1,11 @@
 package ru.stqa.pft.addressbook.appmanager;
 
+import org.jetbrains.annotations.NotNull;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.ContactData;
-import java.util.ArrayList;
+import ru.stqa.pft.addressbook.model.Contacts;
 import java.util.List;
 
 public class ContactHelper extends HelperBase{
@@ -13,7 +14,28 @@ public class ContactHelper extends HelperBase{
         super(driver);
     }
 
-    public void fillContactForm(ContactData contactData) {
+    public void create(@NotNull ContactData contactData) {
+        fillContactForm(contactData);
+        submitContactCreation();
+        contactCache = null;
+        returnToHomePage();
+    }
+
+    public void delete(@NotNull ContactData contact) {
+        selectContact(contact.getId());
+        deleteSelectedContact();
+        contactCache = null;
+    }
+
+    public void modify(@NotNull ContactData contact) {
+        initModification(contact.getId());
+        fillContactForm(contact);
+        submitContactModification();
+        contactCache = null;
+        returnToHomePage();
+    }
+
+    public void fillContactForm(@NotNull ContactData contactData) {
         type(By.name("firstname"), contactData.getFirstName());
         type(By.name("lastname"), contactData.getLastName());
         type(By.name("address"), contactData.getAddress());
@@ -34,41 +56,44 @@ public class ContactHelper extends HelperBase{
         acceptAlert();
     }
 
-    public void selectContact(int index) {
-        driver.findElements(By.name("selected[]")).get(index).click();
+    public void selectContact(int id) {
+        driver.findElement(By.xpath(String.format("//input[@id='%s']", id))).click();
     }
 
-    public void initContactModification(int index) {
-        driver.findElements(By.xpath("//img[@title='Edit']")).get(index).click();
+    public void initModification(int id) {
+        driver.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", id))).click();
     }
 
     public void submitContactModification() {
         click(By.name("update"));
     }
 
-    public void createContact(ContactData contactData) {
-        fillContactForm(contactData);
-        submitContactCreation();
-        returnToHomePage();
-    }
-
     public boolean isThereAContact() {
         return isElementPresent(By.name("selected[]"));
     }
 
-    public int getContactCount() {
+    public int count() {
         return driver.findElements(By.name("selected[]")).size();
     }
 
-    public List<ContactData> getContactList() {
-        List<ContactData> contacts = new ArrayList<>();
+    private Contacts contactCache = null;
+
+    public Contacts all() {
+        if (contactCache != null) {
+            return new Contacts(contactCache);
+        }
+
+        Contacts contacts = new Contacts();
         List<WebElement> rows = driver.findElements(By.name("entry"));
         for (WebElement row : rows) {
             List<WebElement> columns = row.findElements(By.tagName("td"));
             String id = columns.get(0).findElement(By.tagName("input")).getAttribute("id");
             String lastName = columns.get(1).getText();
             String firstName = columns.get(2).getText();
-            contacts.add(new ContactData(Integer.parseInt(id), firstName, lastName));
+            contacts.add(new ContactData()
+                    .withId(Integer.parseInt(id))
+                    .withFirstName(firstName)
+                    .withLastName(lastName));
         }
         return contacts;
     }

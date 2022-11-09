@@ -1,6 +1,7 @@
 package ru.stqa.pft.addressbook.model;
 
 import com.google.common.collect.ForwardingSet;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +10,7 @@ public class Groups extends ForwardingSet<GroupData> {
 
     private Set<GroupData> delegate;
 
-    public Groups(Groups groups) {
+    public Groups(@NotNull Groups groups) {
         this.delegate = new HashSet<GroupData>(groups.delegate);
     }
 
@@ -34,11 +35,11 @@ public class Groups extends ForwardingSet<GroupData> {
         return groups;
     }
 
-    public int getMaxId() {
+    public int maxId() {
         return delegate.stream().mapToInt((g) -> g.getId()).max().getAsInt();
     }
 
-    public GroupData getSome() {
+    public GroupData any() {
         return delegate.iterator().next();
     }
 }

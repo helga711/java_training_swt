@@ -17,11 +17,6 @@ public class TestBase {
         app.init();
     }
 
-    @AfterMethod
-    public void setup() {
-        app.goToBaseURL();
-    }
-
     @AfterSuite
     public void tearDown() {
         app.stop();

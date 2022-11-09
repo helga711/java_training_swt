@@ -11,28 +11,28 @@ public class GroupCreationTests extends TestBase {
   @Test
   public void testGroupCreation() {
     app.goTo().groupPage();
-    Groups before = app.group().getAll();
+    Groups before = app.group().all();
     GroupData group = new GroupData()
             .withName("Test 1")
             .withHeader("Test 1")
             .withFooter("Test 1");
     app.group().create(group);
     assertThat("Test groups quantity.", app.group().count(), equalTo(before.size() + 1));
-    Groups after = app.group().getAll();
-    assertThat("Test groups content.", after, equalTo(before.withAdded(group.withId(after.getMaxId()))));
+    Groups after = app.group().all();
+    assertThat("Test groups content.", after, equalTo(before.withAdded(group.withId(after.maxId()))));
   }
 
   @Test
   public void testBadGroupCreation() {
     app.goTo().groupPage();
-    Groups before = app.group().getAll();
+    Groups before = app.group().all();
     GroupData group = new GroupData()
             .withName("Test 1'")
             .withHeader("Test 1")
             .withFooter("Test 1");
     app.group().create(group);
     assertThat("Test groups quantity.", app.group().count(), equalTo(before.size()));
-    Groups after = app.group().getAll();
+    Groups after = app.group().all();
     assertThat("Test groups content.", after, equalTo(before));
   }
 }

@@ -80,7 +80,7 @@ public class ApplicationManager {
         return sessionHelper;
     }
 
-    public ContactHelper getContactHelper() {
+    public ContactHelper contact() {
         if (contactHelper == null) {
             contactHelper = new ContactHelper(driver);
         }

@@ -15,6 +15,30 @@ public class GroupHelper extends HelperBase {
         super(driver);
     }
 
+    public void create(@NotNull GroupData groupData) {
+        initGroupCreation();
+        fillGroupForm(groupData);
+        submitGroupCreation();
+        groupCache = null;
+        returnToGroupPage();
+    }
+
+    public void modify(@NotNull GroupData group) {
+        selectGroup(group.getId());
+        initGroupModification();
+        fillGroupForm(group);
+        submitGroupModification();
+        groupCache = null;
+        returnToGroupPage();
+    }
+
+    public void delete(@NotNull GroupData group) {
+        selectGroup(group.getId());
+        deleteSelectedGroup();
+        groupCache = null;
+        returnToGroupPage();
+    }
+
     public void returnToGroupPage() {
         click(By.linkText("group page"));
     }
@@ -45,25 +69,8 @@ public class GroupHelper extends HelperBase {
         click(By.name("edit"));
     }
 
-    public void selectGroupById(int id) {
+    public void selectGroup(int id) {
         driver.findElement(By.xpath(String.format("//input[@value='%s']", id))).click();
-    }
-
-    public void create(GroupData groupData) {
-        initGroupCreation();
-        fillGroupForm(groupData);
-        submitGroupCreation();
-        groupCache = null;
-        returnToGroupPage();
-    }
-
-    public void modify(@NotNull GroupData group) {
-        selectGroupById(group.getId());
-        initGroupModification();
-        fillGroupForm(group);
-        submitGroupModification();
-        groupCache = null;
-        returnToGroupPage();
     }
 
     public boolean isThereAGroup() {
@@ -76,7 +83,7 @@ public class GroupHelper extends HelperBase {
 
     private Groups groupCache = null;
 
-    public Groups getAll() {
+    public Groups all() {
         if (groupCache != null) {
             return new Groups(groupCache);
         }
@@ -91,12 +98,5 @@ public class GroupHelper extends HelperBase {
             groupCache.add(group);
         }
         return new Groups(groupCache);
-    }
-
-    public void delete(@NotNull GroupData group) {
-        selectGroupById(group.getId());
-        deleteSelectedGroup();
-        groupCache = null;
-        returnToGroupPage();
     }
 }
