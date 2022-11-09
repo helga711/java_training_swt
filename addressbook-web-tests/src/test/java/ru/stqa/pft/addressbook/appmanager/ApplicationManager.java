@@ -1,5 +1,6 @@
 package ru.stqa.pft.addressbook.appmanager;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -34,22 +35,38 @@ public class ApplicationManager {
             driver = new EdgeDriver(edgeOptions);
         }
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
-        driver.get("http://localhost/addressbook/");
+        goToBaseURL();
         getSessionHelper().login("admin", "secret");
+    }
+
+    public void setUpBrowsers() {
+        if (browser.equals(Browser.FIREFOX.browserName())) {
+            WebDriverManager.firefoxdriver().setup();
+        }
+        else if (browser.equals(Browser.CHROME.browserName())) {
+            WebDriverManager.chromedriver().setup();
+        }
+        else if (browser.equals(Browser.EDGE.browserName())) {
+            WebDriverManager.edgedriver().setup();
+        }
     }
 
     public void stop() {
         driver.quit();
     }
 
-    public GroupHelper getGroupHelper() {
+    public void goToBaseURL() {
+        driver.get("http://localhost/addressbook/");
+    }
+
+    public GroupHelper group() {
         if (groupHelper == null) {
             groupHelper = new GroupHelper(driver);
         }
         return groupHelper;
     }
 
-    public NavigationHelper getNavigationHelper() {
+    public NavigationHelper goTo() {
         if (navigationHelper == null) {
             navigationHelper = new NavigationHelper(driver);
         }

@@ -12,20 +12,19 @@ public class ContactModificationTests extends TestBase {
   public void testContactModification() {
     if (!app.getContactHelper().isThereAContact()) {
       ContactData contactData = new ContactData("Test 1", "Test 2", "Test 3", "+79655555555", "test@test.com");
-      app.getNavigationHelper().goToNewContactPage();
+      app.goTo().goToNewContactPage();
       app.getContactHelper().createContact(contactData);
     }
 
     List<ContactData> before = app.getContactHelper().getContactList();
     app.getContactHelper().initContactModification(before.size() - 1);
-    ContactData contactData = new ContactData("Edit 1", "Edit 2", "Edit 3", "+79666666666", "edit@test.com");
+    ContactData contactData = new ContactData(before.get(before.size() - 1).getId(), "Edit 1", "Edit 2", "Edit 3", "+79666666666", "edit@test.com");
     app.getContactHelper().fillContactForm(contactData);
     app.getContactHelper().submitContactModification();
     app.getContactHelper().returnToHomePage();
     List<ContactData> after = app.getContactHelper().getContactList();
     Assert.assertEquals(after.size(), before.size(), "Contacts' quantity is invalid after modification of the contact.");
 
-    contactData.setId(before.get(before.size() - 1).getId());
     before.remove(before.size() - 1);
     before.add(contactData);
     Comparator<ContactData> byId = Comparator.comparingInt(ContactData::getId);

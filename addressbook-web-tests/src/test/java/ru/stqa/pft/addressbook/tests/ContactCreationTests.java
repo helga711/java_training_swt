@@ -12,7 +12,7 @@ public class ContactCreationTests extends TestBase {
   public void testContactCreation() {
     List<ContactData> before = app.getContactHelper().getContactList();
     ContactData contactData = new ContactData("Test 1", "Test 2", "Test 3", "+79655555555", "test@test.com");
-    app.getNavigationHelper().goToNewContactPage();
+    app.goTo().goToNewContactPage();
     app.getContactHelper().createContact(contactData);
     List<ContactData> after = app.getContactHelper().getContactList();
     Assert.assertEquals(after.size(), before.size() + 1, "Contacts' quantity is invalid after creation of the contact.");

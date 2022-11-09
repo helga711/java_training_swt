@@ -8,7 +8,7 @@ public class NavigationHelper extends HelperBase {
         super(driver);
     }
 
-    public void goToGroupPage() {
+    public void groupPage() {
         if (isElementPresent(By.tagName("h1"))
                 && getText(By.tagName("h1")).equals("Groups")
                 && isElementPresent(By.name("new"))) {
