@@ -8,18 +8,18 @@ import java.util.Set;
 
 public class Groups extends ForwardingSet<GroupData> {
 
-    private Set<GroupData> delegate;
+    private final Set<GroupData> delegate;
 
     public Groups(@NotNull Groups groups) {
-        this.delegate = new HashSet<GroupData>(groups.delegate);
+        this.delegate = new HashSet<>(groups.delegate);
     }
 
     public Groups() {
-        this.delegate = new HashSet<GroupData>();
+        this.delegate = new HashSet<>();
     }
 
     @Override
-    protected Set<GroupData> delegate() {
+    protected @NotNull Set<GroupData> delegate() {
         return delegate;
     }
 
@@ -36,7 +36,7 @@ public class Groups extends ForwardingSet<GroupData> {
     }
 
     public int maxId() {
-        return delegate.stream().mapToInt((g) -> g.getId()).max().getAsInt();
+        return delegate.stream().mapToInt(GroupData::getId).max().orElse(0);
     }
 
     public GroupData any() {

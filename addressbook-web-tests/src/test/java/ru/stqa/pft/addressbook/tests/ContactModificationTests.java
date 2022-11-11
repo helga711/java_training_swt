@@ -13,6 +13,7 @@ public class ContactModificationTests extends TestBase {
   public void ensurePreconditions() {
     app.goTo().baseURL();
     if (app.contact().all().size() == 0) {
+      app.goTo().newContactPage();
       app.contact().create(new ContactData().withFirstName("Test 1"));
     }
   }

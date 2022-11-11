@@ -5,21 +5,26 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Contacts extends ForwardingSet<ContactData> {
 
-    private Set<ContactData> delegate;
+    private final Set<ContactData> delegate;
 
     public Contacts(@NotNull Contacts contacts) {
-        this.delegate = new HashSet<ContactData>(contacts.delegate);
+        this.delegate = new HashSet<>(contacts.delegate);
     }
 
     public Contacts() {
-        this.delegate = new HashSet<ContactData>();
+        this.delegate = new HashSet<>();
+    }
+
+    public Contacts(Set<ContactData> contacts) {
+        this.delegate = new HashSet<>(contacts);
     }
 
     @Override
-    protected Set<ContactData> delegate() {
+    protected @NotNull Set<ContactData> delegate() {
         return delegate;
     }
 
@@ -36,10 +41,31 @@ public class Contacts extends ForwardingSet<ContactData> {
     }
 
     public int maxId() {
-        return delegate.stream().mapToInt((g) -> g.getId()).max().getAsInt();
+        return delegate.stream().mapToInt(ContactData::getId).max().orElse(0);
     }
 
     public ContactData any() {
         return delegate.iterator().next();
+    }
+
+    public Contacts withPhones() {
+        Set<ContactData> set = this.delegate.stream()
+                .filter((contact) -> contact.getAllPhones() != null && !contact.getAllPhones().equals(""))
+                .collect(Collectors.toSet());
+        return new Contacts(set);
+    }
+
+    public Contacts withAddress() {
+        Set<ContactData> set = this.delegate.stream()
+                .filter((contact) -> contact.getAddress() != null && !contact.getAddress().equals(""))
+                .collect(Collectors.toSet());
+        return new Contacts(set);
+    }
+
+    public Contacts withEmails() {
+        Set<ContactData> set = this.delegate.stream()
+                .filter((contact) -> contact.getAllEmails() != null && !contact.getAllEmails().equals(""))
+                .collect(Collectors.toSet());
+        return new Contacts(set);
     }
 }
