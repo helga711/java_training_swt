@@ -8,7 +8,7 @@ public class NavigationHelper extends HelperBase {
         super(driver);
     }
 
-    public void goToGroupPage() {
+    public void groupPage() {
         if (isElementPresent(By.tagName("h1"))
                 && getText(By.tagName("h1")).equals("Groups")
                 && isElementPresent(By.name("new"))) {
@@ -17,7 +17,7 @@ public class NavigationHelper extends HelperBase {
         click(By.linkText("groups"));
     }
 
-    public void goToNewContactPage() {
+    public void newContactPage() {
         if (isElementPresent(By.tagName("h1"))
                 && getText(By.tagName("h1")).equals("Edit / add address book entry")
                 && isElementPresent(By.name("submit"))) {
@@ -26,7 +26,7 @@ public class NavigationHelper extends HelperBase {
         click(By.linkText("add new"));
     }
 
-    public void goToBaseURL() {
+    public void baseURL() {
         driver.get("http://localhost/addressbook/");
     }
 }
