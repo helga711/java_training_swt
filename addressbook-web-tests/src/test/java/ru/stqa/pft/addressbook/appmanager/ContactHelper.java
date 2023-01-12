@@ -88,7 +88,7 @@ public class ContactHelper extends HelperBase{
             return new Contacts(contactCache);
         }
 
-        Contacts contacts = new Contacts();
+        contactCache = new Contacts();
         List<WebElement> rows = driver.findElements(By.name("entry"));
         for (WebElement row : rows) {
             List<WebElement> columns = row.findElements(By.tagName("td"));
@@ -99,7 +99,7 @@ public class ContactHelper extends HelperBase{
             String allEmails = columns.get(4).getText();
             String allPhones = columns.get(5).getText();
 
-            contacts.add(new ContactData()
+            contactCache.add(new ContactData()
                     .withId(Integer.parseInt(id))
                     .withFirstName(firstName)
                     .withLastName(lastName)
@@ -107,7 +107,7 @@ public class ContactHelper extends HelperBase{
                     .withAllEmails(allEmails)
                     .withAllPhones(allPhones));
         }
-        return contacts;
+        return new Contacts(contactCache);
     }
 
     public ContactData infoFromEditForm(int id) {
