@@ -2,6 +2,7 @@ package ru.stqa.pft.addressbook.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,6 +19,7 @@ public class ContactData {
     private String email3;
     private String allPhones;
     private String allEmails;
+    private File photo;
 
     private int id = Integer.MAX_VALUE;
 
@@ -81,6 +83,15 @@ public class ContactData {
         }
 
         return allEmails;
+    }
+
+    public File getPhoto() {
+        return photo;
+    }
+
+    public ContactData withPhoto(File photo) {
+        this.photo = photo;
+        return this;
     }
 
     public ContactData withId(int id) {
