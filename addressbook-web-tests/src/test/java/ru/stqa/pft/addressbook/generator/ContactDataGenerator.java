@@ -6,8 +6,7 @@ import com.beust.jcommander.ParameterException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoughtworks.xstream.XStream;
-import org.jetbrains.annotations.NotNull;
-import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.ContactData;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,9 +15,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupDataGenerator {
+public class ContactDataGenerator {
 
-    @Parameter(names = "-c", description = "Groups count")
+    @Parameter(names = "-c", description = "Contacts count")
     public int count;
 
     @Parameter(names = "-f", description = "Target file")
@@ -28,7 +27,7 @@ public class GroupDataGenerator {
     public String format;
 
     public static void main(String[] args) throws IOException {
-        GroupDataGenerator generator = new GroupDataGenerator();
+        ContactDataGenerator generator = new ContactDataGenerator();
         JCommander jCommander = new JCommander(generator);
         try {
             jCommander.parse(args);
@@ -45,16 +44,13 @@ public class GroupDataGenerator {
             System.out.println("Format is not defined.");
         }
 
-        List<GroupData> groups = generateGroups(count);
+        List<ContactData> contacts = generateContacts(count);
         switch (format) {
-            case "csv":
-                saveAsCsv(groups, new File(file));
-                break;
             case "xml":
-                saveAsXml(groups, new File(file));
+                saveAsXml(contacts, new File(file));
                 break;
             case "json":
-                saveAsJson(groups, new File(file));
+                saveAsJson(contacts, new File(file));
                 break;
             default:
                 System.out.println("Unrecognized format " + format);
@@ -62,42 +58,34 @@ public class GroupDataGenerator {
         }
     }
 
-    private void saveAsJson(List<GroupData> groups, File file) throws IOException {
+    private void saveAsJson(List<ContactData> contacts, File file) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
-        String json = gson.toJson(groups);
+        String json = gson.toJson(contacts);
         try (Writer writer = new FileWriter(file)) {
             writer.write(json);
         }
     }
 
-    private void saveAsXml(List<GroupData> groups, File file) throws IOException {
+    private void saveAsXml(List<ContactData> contacts, File file) throws IOException {
         XStream xStream = new XStream();
-        xStream.processAnnotations(GroupData.class);
-        String xml = xStream.toXML(groups);
+        xStream.processAnnotations(ContactData.class);
+        String xml = xStream.toXML(contacts);
         try (Writer writer = new FileWriter(file)) {
             writer.write(xml);
         }
     }
 
-    private List<GroupData> generateGroups(int count)
+    private List<ContactData> generateContacts(int count)
     {
-        List<GroupData> groups = new ArrayList<>();
+        List<ContactData> contacts = new ArrayList<>();
         for (int i = 0; i < count; i++)
         {
-            groups.add(new GroupData().withName(String.format("test %s", i))
-                    .withHeader(String.format("header %s", i))
-                    .withFooter(String.format("footer %s", i)));
+            contacts.add(new ContactData().withLastName(String.format("Last name %s", i))
+                    .withFirstName(String.format("First name %s", i))
+                    .withPhoneHome(String.format("555 55 %s", i))
+                    .withAddress(String.format("address %n address %s", i))
+                    .withEmail(String.format("test%s@test.com", i)));
         }
-        return groups;
-    }
-
-    public void saveAsCsv(@NotNull List<GroupData> groups, File file) throws IOException
-    {
-        try (Writer writer = new FileWriter(file)) {
-
-            for (GroupData group : groups) {
-                writer.write(String.format("%s;%s;%s%n", group.getName(), group.getHeader(), group.getFooter()));
-            }
-        }
+        return contacts;
     }
 }
