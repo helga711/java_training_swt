@@ -2,21 +2,21 @@
   {
     "firstName": "First name 0",
     "lastName": "Last name 0",
-    "address": "address \r\n address 0",
+    "address": "address \r\naddress 0",
     "phoneHome": "555 55 0",
     "email": "test0@test.com"
   },
   {
     "firstName": "First name 1",
     "lastName": "Last name 1",
-    "address": "address \r\n address 1",
+    "address": "address \r\naddress 1",
     "phoneHome": "555 55 1",
     "email": "test1@test.com"
   },
   {
     "firstName": "First name 2",
     "lastName": "Last name 2",
-    "address": "address \r\n address 2",
+    "address": "address \r\naddress 2",
     "phoneHome": "555 55 2",
     "email": "test2@test.com"
   }
