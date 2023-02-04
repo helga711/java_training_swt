@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ContactModificationTests extends TestBase {
 
   @BeforeMethod
-  public void ensurePreconditions() {
+  public void ensurePreconditions() throws Exception {
     app.goTo().baseURL();
     if (app.contact().all().size() == 0) {
       app.goTo().newContactPage();
@@ -19,7 +19,7 @@ public class ContactModificationTests extends TestBase {
   }
 
   @Test
-  public void testContactModification() {
+  public void testContactModification() throws Exception {
     Contacts before = app.contact().all();
     ContactData modifiedContact = before.any();
     ContactData contact = new ContactData()

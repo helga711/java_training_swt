@@ -20,6 +20,7 @@ public class ApplicationManager {
     private GroupHelper groupHelper;
     private SessionHelper sessionHelper;
     private ContactHelper contactHelper;
+    private DBHelper dbHelper;
     private final String browser;
 
     public ApplicationManager(String browserName) {
@@ -84,5 +85,12 @@ public class ApplicationManager {
             contactHelper = new ContactHelper(driver);
         }
         return contactHelper;
+    }
+
+    public DBHelper db() {
+        if (dbHelper == null) {
+            dbHelper = new DBHelper();
+        }
+        return dbHelper;
     }
 }

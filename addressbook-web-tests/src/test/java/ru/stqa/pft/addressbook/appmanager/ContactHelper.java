@@ -14,8 +14,8 @@ public class ContactHelper extends HelperBase{
         super(driver);
     }
 
-    public void create(@NotNull ContactData contactData) {
-        fillContactForm(contactData);
+    public void create(@NotNull ContactData contactData) throws Exception {
+        fillContactForm(contactData, true);
         submitContactCreation();
         contactCache = null;
         returnToHomePage();
@@ -28,25 +28,32 @@ public class ContactHelper extends HelperBase{
         driver.navigate().refresh();
     }
 
-    public void modify(@NotNull ContactData contact) {
+    public void modify(@NotNull ContactData contact) throws Exception {
         initModification(contact.getId());
-        fillContactForm(contact);
+        fillContactForm(contact, false);
         submitContactModification();
         contactCache = null;
         returnToHomePage();
     }
 
-    public void fillContactForm(@NotNull ContactData contactData) {
-        type(By.name("firstname"), contactData.getFirstName());
-        type(By.name("lastname"), contactData.getLastName());
-        attach(By.name("photo"), contactData.getPhoto());
-        type(By.name("address"), contactData.getAddress());
-        type(By.name("home"), contactData.getPhoneHome());
-        type(By.name("mobile"), contactData.getPhoneMobile());
-        type(By.name("work"), contactData.getPhoneWork());
-        type(By.name("email"), contactData.getEmail());
-        type(By.name("email2"), contactData.getEmail2());
-        type(By.name("email3"), contactData.getEmail3());
+    public void fillContactForm(@NotNull ContactData contact, Boolean creation) throws Exception {
+        type(By.name("firstname"), contact.getFirstName());
+        type(By.name("lastname"), contact.getLastName());
+        attach(By.name("photo"), contact.getPhoto());
+        type(By.name("address"), contact.getAddress());
+        type(By.name("home"), contact.getPhoneHome());
+        type(By.name("mobile"), contact.getPhoneMobile());
+        type(By.name("work"), contact.getPhoneWork());
+        type(By.name("email"), contact.getEmail());
+        type(By.name("email2"), contact.getEmail2());
+        type(By.name("email3"), contact.getEmail3());
+        int groupsSize = contact.getGroups().size();
+        if (creation && groupsSize > 0) {
+            if (groupsSize > 1){
+                throw new Exception(String.format("Contact %s has more than one group for Create operation. Cannot choose.", contact));
+            }
+            select(By.name("new_group"), contact.getGroups().any().getName());
+        }
     }
 
     public void submitContactCreation() {

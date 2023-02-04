@@ -3,41 +3,89 @@ package ru.stqa.pft.addressbook.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
 import org.jetbrains.annotations.NotNull;
 
+import javax.persistence.*;
 import java.io.File;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @XStreamAlias("contact")
+@Entity
+@Table(name = "addressbook")
 public class ContactData {
     @Expose
+    @Column(name = "firstname")
     private String firstName;
+
     @Expose
+    @Column(name = "lastname")
     private String lastName;
+
     @Expose
+    @Column(name = "address")
+    @Type(type = "text")
     private String address;
+
     @Expose
+    @Column(name = "home")
+    @Type(type = "text")
     private String phoneHome;
+
     @Expose
+    @Column(name = "mobile")
+    @Type(type = "text")
     private String phoneMobile;
+
     @Expose
+    @Column(name = "work")
+    @Type(type = "text")
     private String phoneWork;
+
     @Expose
+    @Column(name = "email")
+    @Type(type = "text")
     private String email;
+
     @Expose
+    @Column(name = "email2")
+    @Type(type = "text")
     private String email2;
+
     @Expose
+    @Column(name = "email3")
+    @Type(type = "text")
     private String email3;
+
     @XStreamOmitField
+    @Transient
     private String allPhones;
+
     @XStreamOmitField
+    @Transient
     private String allEmails;
-    @Expose
-    private File photo;
+
     @XStreamOmitField
+    @Column(name = "photo")
+    @Type(type = "text")
+    private String photo;
+
+    @XStreamOmitField
+    @Id
+    @Column(name = "id")
     private int id = Integer.MAX_VALUE;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "address_in_groups", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
+    public Set<GroupData> groups = new HashSet<>();
+
+    public Groups getGroups() {
+        return new Groups(groups);
+    }
 
     public String getFirstName() {
 
@@ -102,11 +150,11 @@ public class ContactData {
     }
 
     public File getPhoto() {
-        return photo;
+        return new File(photo);
     }
 
     public ContactData withPhoto(File photo) {
-        this.photo = photo;
+        this.photo = photo.getPath();
         return this;
     }
 
@@ -167,6 +215,11 @@ public class ContactData {
 
     public ContactData withAllEmails(String allEmails) {
         this.allEmails = allEmails;
+        return this;
+    }
+
+    public ContactData inGroups(GroupData group) {
+        groups.add(group);
         return this;
     }
 

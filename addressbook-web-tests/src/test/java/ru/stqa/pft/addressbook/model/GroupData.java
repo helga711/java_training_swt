@@ -3,19 +3,42 @@ package ru.stqa.pft.addressbook.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @XStreamAlias("group")
+@Entity
+@Table(name = "group_list")
 public class GroupData {
     @Expose
+    @Column(name = "group_name")
     private String name;
+
     @Expose
+    @Column(name = "group_header")
+    @Type(type = "text")
     private String header;
+
     @Expose
+    @Column(name = "group_footer")
+    @Type(type = "text")
     private String footer;
+
     @XStreamOmitField
+    @Id
+    @Column(name = "group_id")
     private int id = Integer.MAX_VALUE;
+
+    @ManyToMany(mappedBy = "groups")
+    private Set<ContactData> contacts = new HashSet<>();
+
+    public Contacts getContacts() {
+        return new Contacts(contacts);
+    }
 
     public String getName() {
         return name;
@@ -66,11 +89,11 @@ public class GroupData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GroupData groupData = (GroupData) o;
-        return id == groupData.id && Objects.equals(name, groupData.name);
+        return id == groupData.id && Objects.equals(name, groupData.name) && Objects.equals(header, groupData.header) && Objects.equals(footer, groupData.footer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, id);
+        return Objects.hash(name, header, footer, id);
     }
 }

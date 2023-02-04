@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ContactAddressTests extends TestBase {
 
   @BeforeMethod
-  public void ensurePreconditions() {
+  public void ensurePreconditions() throws Exception {
     app.goTo().baseURL();
     if (app.contact().all().withAddress().size() == 0) {
       app.goTo().newContactPage();
