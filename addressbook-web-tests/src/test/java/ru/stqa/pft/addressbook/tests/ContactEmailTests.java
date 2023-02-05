@@ -12,7 +12,7 @@ public class ContactEmailTests extends TestBase {
   @BeforeMethod
   public void ensurePreconditions() throws Exception {
     app.goTo().baseURL();
-    if (app.contact().all().withEmails().size() == 0) {
+    if (app.db().contacts().withEmails().size() == 0) {
       app.goTo().newContactPage();
       app.contact().create(new ContactData()
               .withFirstName("Test 1")
@@ -25,7 +25,7 @@ public class ContactEmailTests extends TestBase {
 
   @Test
   public void testContactEmails() {
-    ContactData contact = app.contact().all().withEmails().any();
+    ContactData contact = app.db().contacts().withEmails().any();
     ContactData contactFromEditForm = app.contact().infoFromEditForm(contact.getId());
     assertThat(String.format("Test emails for %s", contact), contact.getAllEmails(), equalTo(contactFromEditForm.getAllEmails()));
   }

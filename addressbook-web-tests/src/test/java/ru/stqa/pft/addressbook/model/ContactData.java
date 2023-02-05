@@ -150,6 +150,10 @@ public class ContactData {
     }
 
     public File getPhoto() {
+        if (photo == null) {
+            return  null;
+        }
+
         return new File(photo);
     }
 
@@ -227,17 +231,36 @@ public class ContactData {
         return phone.replaceAll("\\s", "").replaceAll("[-()]", "");
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ContactData that = (ContactData) o;
-        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName);
-    }
+    public ContactData toDB(){
+        if (this.address == null) {
+            this.address = "";
+        }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, id);
+        if (this.phoneHome == null) {
+            this.phoneHome = "";
+        }
+
+        if (this.phoneMobile == null) {
+            this.phoneMobile = "";
+        }
+
+        if (this.phoneWork == null) {
+            this.phoneWork = "";
+        }
+
+        if (this.email == null) {
+            this.email = "";
+        }
+
+        if (this.email2 == null) {
+            this.email2 = "";
+        }
+
+        if (this.email3 == null) {
+            this.email3 = "";
+        }
+
+        return this;
     }
 
     @Override
@@ -247,5 +270,18 @@ public class ContactData {
                 ", lastName='" + lastName + '\'' +
                 ", id=" + id +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContactData that = (ContactData) o;
+        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(address, that.address) && Objects.equals(phoneHome, that.phoneHome) && Objects.equals(phoneMobile, that.phoneMobile) && Objects.equals(phoneWork, that.phoneWork) && Objects.equals(email, that.email) && Objects.equals(email2, that.email2) && Objects.equals(email3, that.email3);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, address, phoneHome, phoneMobile, phoneWork, email, email2, email3, id);
     }
 }

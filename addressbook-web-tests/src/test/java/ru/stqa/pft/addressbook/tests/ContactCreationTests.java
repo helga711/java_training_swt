@@ -42,11 +42,12 @@ public class ContactCreationTests extends TestBase {
   public void testContactCreation(ContactData contact) throws Exception {
     app.goTo().baseURL();
     contact.withPhoto(new File("src/test/resources/images.jpg")).inGroups(app.db().groups().any());
-    Contacts before = app.contact().all();
+    Contacts before = app.db().contacts();
     app.goTo().newContactPage();
     app.contact().create(contact);
     assertThat("Test contacts quantity.", app.contact().count(), equalTo(before.size() + 1));
-    Contacts after = app.contact().all();
-    assertThat("Test contacts content.", after, equalTo(before.withAdded(contact.withId(after.maxId()))));
+    Contacts after = app.db().contacts();
+    assertThat("Test contacts content.", after, equalTo(before.withAdded(contact.withId(after.maxId()).toDB())));
+    verifyContactListInUI();
   }
 }

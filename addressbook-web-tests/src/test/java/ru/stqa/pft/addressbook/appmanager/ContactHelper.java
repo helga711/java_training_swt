@@ -25,7 +25,6 @@ public class ContactHelper extends HelperBase{
         selectContact(contact.getId());
         deleteSelectedContact();
         contactCache = null;
-        driver.navigate().refresh();
     }
 
     public void modify(@NotNull ContactData contact) throws Exception {

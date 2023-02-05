@@ -27,9 +27,18 @@ public class DBHelper {
     public Groups groups(){
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        List<GroupData> result = session.createQuery( "from GroupData", GroupData.class ).list();
+        List<GroupData> result = session.createQuery( "from GroupData", GroupData.class).list();
         session.getTransaction().commit();
         session.close();
         return new Groups(result);
+    }
+
+    public Contacts contacts(){
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        List<ContactData> result = session.createQuery( "from ContactData where deprecated = '0000-00-00'", ContactData.class).list();
+        session.getTransaction().commit();
+        session.close();
+        return new Contacts(result);
     }
 }
