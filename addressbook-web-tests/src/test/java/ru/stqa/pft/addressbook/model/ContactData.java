@@ -222,8 +222,13 @@ public class ContactData {
         return this;
     }
 
-    public ContactData inGroups(GroupData group) {
+    public ContactData inGroup(GroupData group) {
         groups.add(group);
+        return this;
+    }
+
+    public ContactData inGroups(Groups groups) {
+        this.groups.addAll(groups);
         return this;
     }
 
@@ -265,11 +270,40 @@ public class ContactData {
 
     @Override
     public String toString() {
-        return "ContactData{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", id=" + id +
-                '}';
+        StringBuilder toString = new StringBuilder();
+        toString.append("ContactData{");
+        toString.append(String.format("firstName='%s'", firstName));
+        toString.append(String.format(", lastName='%s'", lastName));
+        toString.append(String.format(", id='%s'", id));
+
+        if (address != null && !address.equals("")){
+            toString.append(String.format(", address='%s'", address));
+        }
+        if (getAllPhones() != null && !getAllPhones().equals("")){
+            toString.append(String.format(", allPhones='%s'", allPhones));
+        }
+        if (getAllEmails() != null && !getAllEmails().equals("")){
+            toString.append(String.format(", allEmails='%s'", allEmails));
+        }
+        if (groups != null && groups.size() > 0){
+            toString.append(String.format(", groups='%s'", groups));
+        }
+        return toString.toString();
+    }
+
+    public ContactData copy(){
+        return  new ContactData()
+                .withId(id)
+                .withFirstName(firstName)
+                .withLastName(lastName)
+                .withAddress(address)
+                .withPhoneHome(phoneHome)
+                .withPhoneMobile(phoneMobile)
+                .withPhoneWork(phoneWork)
+                .withEmail(email)
+                .withEmail2(email2)
+                .withEmail3(email3)
+                .inGroups(new Groups(groups));
     }
 
     @Override
@@ -277,11 +311,11 @@ public class ContactData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ContactData that = (ContactData) o;
-        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(address, that.address) && Objects.equals(phoneHome, that.phoneHome) && Objects.equals(phoneMobile, that.phoneMobile) && Objects.equals(phoneWork, that.phoneWork) && Objects.equals(email, that.email) && Objects.equals(email2, that.email2) && Objects.equals(email3, that.email3);
+        return id == that.id && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(address, that.address) && Objects.equals(phoneHome, that.phoneHome) && Objects.equals(phoneMobile, that.phoneMobile) && Objects.equals(phoneWork, that.phoneWork) && Objects.equals(email, that.email) && Objects.equals(email2, that.email2) && Objects.equals(email3, that.email3) && Objects.equals(groups, that.groups);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, address, phoneHome, phoneMobile, phoneWork, email, email2, email3, id);
+        return Objects.hash(firstName, lastName, address, phoneHome, phoneMobile, phoneWork, email, email2, email3, id, groups);
     }
 }

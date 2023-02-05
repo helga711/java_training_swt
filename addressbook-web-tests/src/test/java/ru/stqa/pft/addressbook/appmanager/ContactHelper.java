@@ -6,6 +6,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
+
 import java.util.List;
 
 public class ContactHelper extends HelperBase{
@@ -51,7 +54,7 @@ public class ContactHelper extends HelperBase{
             if (groupsSize > 1){
                 throw new Exception(String.format("Contact %s has more than one group for Create operation. Cannot choose.", contact));
             }
-            select(By.name("new_group"), contact.getGroups().any().getName());
+            selectByValue(By.name("new_group"), String.valueOf(contact.getGroups().any().getId()));
         }
     }
 
@@ -133,5 +136,27 @@ public class ContactHelper extends HelperBase{
                 .withPhoneHome(home).withPhoneWork(work).withPhoneMobile(mobile)
                 .withEmail(email).withEmail2(email2).withEmail3(email3)
                 .withAddress(address);
+    }
+
+    public void selectGroup(int id) {
+        selectByValue(By.name("to_group"), String.valueOf(id));
+    }
+
+    public void submitAddingToGroup() {
+        click(By.name("add"));
+    }
+
+    public void AddToGroups(ContactData contact, Groups groups) {
+        for (GroupData group : groups) {
+            selectContact(contact.getId());
+            selectGroup(group.getId());
+            submitAddingToGroup();
+            contactCache = null;
+            navigateToContactsInGroup(group);
+        }
+    }
+
+    private void navigateToContactsInGroup(GroupData group) {
+        click(By.linkText(String.format("group page \"%s\"", group.getName())));
     }
 }

@@ -84,4 +84,11 @@ public class Contacts extends ForwardingSet<ContactData> {
                         .withAllPhones(c.getAllPhones())).collect(Collectors.toSet());
         return new Contacts(set);
     }
+
+    public Contacts withoutGroups() {
+        Set<ContactData> set = delegate.stream()
+                .filter((c) -> c.groups == null || c.groups.size() == 0)
+                .collect(Collectors.toSet());
+        return new Contacts(set);
+    }
 }

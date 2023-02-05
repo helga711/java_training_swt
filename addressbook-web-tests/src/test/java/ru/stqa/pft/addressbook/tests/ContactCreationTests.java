@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.appmanager.FileExt;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
-import ru.stqa.pft.addressbook.model.Groups;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class ContactCreationTests extends TestBase {
   @Test (dataProvider = "validContactsFromXML")
   public void testContactCreation(ContactData contact) throws Exception {
     app.goTo().baseURL();
-    contact.withPhoto(new File("src/test/resources/images.jpg")).inGroups(app.db().groups().any());
+    contact.withPhoto(new File("src/test/resources/images.jpg")).inGroup(app.db().groups().any());
     Contacts before = app.db().contacts();
     app.goTo().newContactPage();
     app.contact().create(contact);

@@ -22,8 +22,7 @@ public class ContactModificationTests extends TestBase {
   public void testContactModification() throws Exception {
     Contacts before = app.db().contacts();
     ContactData modifiedContact = before.any();
-    ContactData contact = new ContactData()
-            .withId(modifiedContact.getId())
+    ContactData contact = modifiedContact.copy()
             .withFirstName("Edit 1")
             .withLastName("Edit 2")
             .withAddress("Edit 3")
@@ -32,7 +31,7 @@ public class ContactModificationTests extends TestBase {
     app.contact().modify(contact);
     assertThat("Test contacts quantity.", app.contact().count(), equalTo(before.size()));
     Contacts after = app.db().contacts();
-    assertThat("Test contacts content.", after, equalTo(before.without(modifiedContact).withAdded(contact.toDB())));
+    assertThat("Test contacts content.", after, equalTo(before.without(modifiedContact).withAdded(contact)));
     verifyContactListInUI();
   }
 }

@@ -17,7 +17,7 @@ public class ContactAddressTests extends TestBase {
       app.contact().create(new ContactData()
               .withFirstName("Test 1")
               .withLastName("Test 2")
-              .withAddress("221B Baker Street\nMarylebone\nLondon UK"));
+              .withAddress("221B Baker Street\r\nMarylebone\r\nLondon UK"));
     }
   }
 

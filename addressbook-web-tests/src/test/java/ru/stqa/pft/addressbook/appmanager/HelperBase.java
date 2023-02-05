@@ -30,10 +30,17 @@ public class HelperBase {
         }
     }
 
-    protected void select(By locator, String text) {
+    protected void selectByText(By locator, String text) {
         if (text != null) {
             Select select = new Select(driver.findElement(locator));
             select.selectByVisibleText(text);
+        }
+    }
+
+    protected void selectByValue(By locator, String value) {
+        if (value != null) {
+            Select select = new Select(driver.findElement(locator));
+            select.selectByValue(value);
         }
     }
 
