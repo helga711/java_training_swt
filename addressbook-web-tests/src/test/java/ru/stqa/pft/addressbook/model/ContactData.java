@@ -232,6 +232,11 @@ public class ContactData {
         return this;
     }
 
+    public ContactData withoutGroups(Set<GroupData> groups) {
+        this.groups.removeAll(groups);
+        return this;
+    }
+
     private static String cleaned(@NotNull String phone) {
         return phone.replaceAll("\\s", "").replaceAll("[-()]", "");
     }

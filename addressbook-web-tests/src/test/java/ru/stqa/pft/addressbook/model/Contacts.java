@@ -91,4 +91,11 @@ public class Contacts extends ForwardingSet<ContactData> {
                 .collect(Collectors.toSet());
         return new Contacts(set);
     }
+
+    public Contacts withGroups() {
+        Set<ContactData> set = delegate.stream()
+                .filter((c) -> c.groups != null && c.groups.size() > 0)
+                .collect(Collectors.toSet());
+        return new Contacts(set);
+    }
 }

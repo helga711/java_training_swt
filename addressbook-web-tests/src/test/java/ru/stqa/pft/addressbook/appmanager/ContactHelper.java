@@ -10,6 +10,7 @@ import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase{
 
@@ -138,8 +139,8 @@ public class ContactHelper extends HelperBase{
                 .withAddress(address);
     }
 
-    public void selectGroup(int id) {
-        selectByValue(By.name("to_group"), String.valueOf(id));
+    public void selectGroup(int groupId) {
+        selectByValue(By.name("to_group"), String.valueOf(groupId));
     }
 
     public void submitAddingToGroup() {
@@ -152,11 +153,28 @@ public class ContactHelper extends HelperBase{
             selectGroup(group.getId());
             submitAddingToGroup();
             contactCache = null;
-            navigateToContactsInGroup(group);
+            navigateToContactsInGroup(group.getName());
         }
     }
 
-    private void navigateToContactsInGroup(GroupData group) {
-        click(By.linkText(String.format("group page \"%s\"", group.getName())));
+    private void navigateToContactsInGroup(String groupName) {
+        click(By.linkText(String.format("group page \"%s\"", groupName)));
+    }
+
+    public void DeleteFromGroups(ContactData contact, Set<GroupData> groups) {
+        for (GroupData group : groups) {
+            openContactsInGroup(group.getId());
+            selectContact(contact.getId());
+            submitDeletingFromGroup();
+            navigateToContactsInGroup(group.getName());
+        }
+    }
+
+    private void submitDeletingFromGroup() {
+        click(By.name("remove"));
+    }
+
+    private void openContactsInGroup(int groupId) {
+        selectByValue(By.name("group"), String.valueOf(groupId));
     }
 }
