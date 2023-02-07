@@ -1,4 +1,4 @@
-package ri.stqa.pft.mantis.appmanager;
+package ru.stqa.pft.mantis.appmanager;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -16,11 +16,14 @@ import java.util.Properties;
 public class ApplicationManager {
     private static WebDriver driver;
     private final Properties properties;
+    private final String browser;
     private RegistrationHelper registrationHelper;
     private FtpHelper ftpHelper;
     private MailHelper mailHelper;
     private JamesHelper jamesHelper;
-    private final String browser;
+    private PasswordHelper passwordHelper;
+    private SessionHelper sessionHelper;
+    private DBHelper dbHelper;
 
     public ApplicationManager(String browserName) {
         this.browser = browserName;
@@ -76,6 +79,32 @@ public class ApplicationManager {
             jamesHelper = new JamesHelper(this);
         }
         return jamesHelper;
+    }
+
+    public PasswordHelper password() {
+        if (passwordHelper == null) {
+            passwordHelper = new PasswordHelper(this);
+        }
+        return passwordHelper;
+    }
+
+    public SessionHelper uisession() {
+        if (sessionHelper == null) {
+            sessionHelper = new SessionHelper(this);
+        }
+        return sessionHelper;
+    }
+
+    public DBHelper db() {
+        if (dbHelper == null) {
+            dbHelper = new DBHelper();
+        }
+        return dbHelper;
+    }
+
+    public IMailServer mailServer() {
+        boolean inBuildMailServer = Boolean.parseBoolean(System.getProperty("inBuildMailServer", "true"));
+        return inBuildMailServer ? mail() : james();
     }
 
     public WebDriver getDriver() {

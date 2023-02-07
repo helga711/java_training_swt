@@ -1,4 +1,4 @@
-package ri.stqa.pft.mantis.model;
+package ru.stqa.pft.mantis.model;
 
 public class MailMessage {
     public final String text;

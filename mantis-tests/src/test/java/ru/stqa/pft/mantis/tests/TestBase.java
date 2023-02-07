@@ -1,4 +1,4 @@
-package ri.stqa.pft.mantis.tests;
+package ru.stqa.pft.mantis.tests;
 
 import org.openqa.selenium.remote.Browser;
 import org.slf4j.Logger;
@@ -7,7 +7,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import ri.stqa.pft.mantis.appmanager.ApplicationManager;
+import ru.stqa.pft.mantis.appmanager.ApplicationManager;
 
 import java.io.File;
 import java.io.IOException;

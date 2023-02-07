@@ -1,9 +1,9 @@
-package ri.stqa.pft.mantis.appmanager;
+package ru.stqa.pft.mantis.appmanager;
 
 import org.apache.commons.net.telnet.TelnetClient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ri.stqa.pft.mantis.model.MailMessage;
+import ru.stqa.pft.mantis.model.MailMessage;
 
 import javax.mail.*;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JamesHelper {
+public class JamesHelper implements IMailServer {
     private final ApplicationManager app;
 
     private final TelnetClient telnet;
@@ -43,6 +43,34 @@ public class JamesHelper {
         write("adduser " + username + " " + password);
         readUntil("User " + username + " added");
         closeTelnetSession();
+    }
+
+    @Override
+    public List<MailMessage> waitForMail(String username, String password, int count, int timeout) throws Exception {
+        long start = System.currentTimeMillis();
+        while (System.currentTimeMillis() < start + timeout){
+            List<MailMessage> allMail = getAllMail(username, password);
+            if (allMail.size() > 0) {
+                return allMail;
+            }
+            try {
+                Thread.sleep(1000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        throw new Exception("No mails.");
+    }
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void stop() {
+
     }
 
     private void closeTelnetSession() {
@@ -134,23 +162,6 @@ public class JamesHelper {
     private void closeFolder(@NotNull Folder folder) throws MessagingException {
         folder.close(true);
         store.close();
-    }
-
-    public List<MailMessage> waitForMail(String username, String password, int timeout) throws Exception {
-        long start = System.currentTimeMillis();
-        while (System.currentTimeMillis() < start + timeout){
-            List<MailMessage> allMail = getAllMail(username, password);
-            if (allMail.size() > 0) {
-                return allMail;
-            }
-            try {
-                Thread.sleep(1000);
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        throw new Exception("No mails.");
     }
 
     private List<MailMessage> getAllMail(String username, String password) throws MessagingException {
