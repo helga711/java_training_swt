@@ -18,9 +18,8 @@ public class ChangePasswordTests extends MailTestBase {
             User user = new User()
                     .withUsername("user" + now)
                     .withMantisPassword("password")
-                    .withEmail(String.format("user%s@localhost.localdomain", now));
+                    .withEmail(String.format("user%s@localhost", now));
             register(user);
-            app.mailServer().drainEmail(user.getUsername(), user.getMailPassword());
         }
     }
 
@@ -28,6 +27,10 @@ public class ChangePasswordTests extends MailTestBase {
     public void testPasswordChanging() throws Exception {
         User user = app.db().simpleUsers().iterator().next()
                 .withMantisPassword("password" + System.currentTimeMillis());
+        if (!app.mailServer().doesUserExist(user.getUsername())) {
+            app.mailServer().createUser(user.getUsername(), user.getMailPassword());
+        }
+        app.mailServer().drainEmail(user.getUsername(), user.getMailPassword());
         app.uisession().loginByAdmin();
         app.password().startChanging(user.getUsername());
         List<MailMessage> mailMessages = app.mailServer().waitForMail(user.getUsername(), user.getMailPassword(), 1, 60000);

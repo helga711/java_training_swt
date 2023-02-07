@@ -47,6 +47,11 @@ public class MailHelper implements IMailServer {
     }
 
     @Override
+    public boolean doesUserExist(String name) {
+        return true;
+    }
+
+    @Override
     public void createUser(String username, String password) {
 
     }

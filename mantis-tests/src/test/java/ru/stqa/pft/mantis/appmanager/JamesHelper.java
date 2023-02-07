@@ -30,12 +30,12 @@ public class JamesHelper implements IMailServer {
         mailSession = Session.getDefaultInstance(System.getProperties());
     }
 
-    private boolean doesUserExist(String name) {
+    public boolean doesUserExist(String name) {
         initTelnetSession();
-        write("verify" + name);
+        write("verify " + name);
         String result = readUntil("exist");
         closeTelnetSession();
-        return result != null && result.trim().equals("User " + name + "exists");
+        return result != null && result.trim().equals("User " + name + " exist");
     }
 
     public void createUser(String username, String password) {

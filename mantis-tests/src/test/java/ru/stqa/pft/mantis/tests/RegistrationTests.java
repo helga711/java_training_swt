@@ -13,7 +13,7 @@ public class RegistrationTests extends MailTestBase {
         User user = new User()
                 .withUsername("user" + now)
                 .withMantisPassword("password")
-                .withEmail(String.format("user%s@localhost.localdomain", now));
+                .withEmail(String.format("user%s@localhost", now));
         register(user);
         assertTrue(app.newSession().login(user.getUsername(), user.getMantisPassword()));
     }

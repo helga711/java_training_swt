@@ -16,4 +16,6 @@ public interface IMailServer {
     void stop();
 
     void drainEmail(String username, String password) throws MessagingException;
+
+    boolean doesUserExist(String name);
 }
