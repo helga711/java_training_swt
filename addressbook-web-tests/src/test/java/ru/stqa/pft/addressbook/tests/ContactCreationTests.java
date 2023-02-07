@@ -39,7 +39,7 @@ public class ContactCreationTests extends TestBase {
 
   @Test (dataProvider = "validContactsFromXML")
   public void testContactCreation(ContactData contact) {
-    app.goTo().baseURL();
+    app.goToBaseURL();
     Contacts before = app.contact().all();
     contact.withPhoto(new File("src/test/resources/images.jpg"));
     app.goTo().newContactPage();
