@@ -3,6 +3,7 @@ package ru.stqa.pft.addressbook.model;
 import com.google.common.collect.ForwardingSet;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,6 +21,10 @@ public class Contacts extends ForwardingSet<ContactData> {
     }
 
     public Contacts(Set<ContactData> contacts) {
+        this.delegate = new HashSet<>(contacts);
+    }
+
+    public Contacts(Collection<ContactData> contacts) {
         this.delegate = new HashSet<>(contacts);
     }
 
@@ -65,6 +70,31 @@ public class Contacts extends ForwardingSet<ContactData> {
     public Contacts withEmails() {
         Set<ContactData> set = this.delegate.stream()
                 .filter((contact) -> contact.getAllEmails() != null && !contact.getAllEmails().equals(""))
+                .collect(Collectors.toSet());
+        return new Contacts(set);
+    }
+
+    public Contacts toUI() {
+        Set<ContactData> set = this.delegate.stream().map((c) -> new ContactData()
+                        .withId(c.getId())
+                        .withLastName(c.getLastName())
+                        .withFirstName(c.getFirstName())
+                        .withAddress(c.getAddress())
+                        .withAllEmails(c.getAllEmails())
+                        .withAllPhones(c.getAllPhones())).collect(Collectors.toSet());
+        return new Contacts(set);
+    }
+
+    public Contacts withoutGroups() {
+        Set<ContactData> set = delegate.stream()
+                .filter((c) -> c.groups == null || c.groups.size() == 0)
+                .collect(Collectors.toSet());
+        return new Contacts(set);
+    }
+
+    public Contacts withGroups() {
+        Set<ContactData> set = delegate.stream()
+                .filter((c) -> c.groups != null && c.groups.size() > 0)
                 .collect(Collectors.toSet());
         return new Contacts(set);
     }

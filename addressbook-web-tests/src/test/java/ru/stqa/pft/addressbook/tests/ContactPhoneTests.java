@@ -10,9 +10,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ContactPhoneTests extends TestBase {
 
   @BeforeMethod
-  public void ensurePreconditions() {
+  public void ensurePreconditions() throws Exception {
     app.goTo().baseURL();
-    if (app.contact().all().withPhones().size() == 0) {
+    if (app.db().contacts().withPhones().size() == 0) {
       app.goTo().newContactPage();
       app.contact().create(new ContactData()
               .withFirstName("Test 1")
@@ -25,7 +25,7 @@ public class ContactPhoneTests extends TestBase {
 
   @Test
   public void testContactPhones() {
-    ContactData contact = app.contact().all().withPhones().any();
+    ContactData contact = app.db().contacts().withPhones().any();
     ContactData contactFromEditForm = app.contact().infoFromEditForm(contact.getId());
     assertThat(String.format("Test phones for %s", contact), contact.getAllPhones(), equalTo(contactFromEditForm.getAllPhones()));
   }

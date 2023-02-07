@@ -6,7 +6,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
+
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase{
 
@@ -14,8 +18,8 @@ public class ContactHelper extends HelperBase{
         super(driver);
     }
 
-    public void create(@NotNull ContactData contactData) {
-        fillContactForm(contactData);
+    public void create(@NotNull ContactData contactData) throws Exception {
+        fillContactForm(contactData, true);
         submitContactCreation();
         contactCache = null;
         returnToHomePage();
@@ -25,28 +29,34 @@ public class ContactHelper extends HelperBase{
         selectContact(contact.getId());
         deleteSelectedContact();
         contactCache = null;
-        driver.navigate().refresh();
     }
 
-    public void modify(@NotNull ContactData contact) {
+    public void modify(@NotNull ContactData contact) throws Exception {
         initModification(contact.getId());
-        fillContactForm(contact);
+        fillContactForm(contact, false);
         submitContactModification();
         contactCache = null;
         returnToHomePage();
     }
 
-    public void fillContactForm(@NotNull ContactData contactData) {
-        type(By.name("firstname"), contactData.getFirstName());
-        type(By.name("lastname"), contactData.getLastName());
-        attach(By.name("photo"), contactData.getPhoto());
-        type(By.name("address"), contactData.getAddress());
-        type(By.name("home"), contactData.getPhoneHome());
-        type(By.name("mobile"), contactData.getPhoneMobile());
-        type(By.name("work"), contactData.getPhoneWork());
-        type(By.name("email"), contactData.getEmail());
-        type(By.name("email2"), contactData.getEmail2());
-        type(By.name("email3"), contactData.getEmail3());
+    public void fillContactForm(@NotNull ContactData contact, Boolean creation) throws Exception {
+        type(By.name("firstname"), contact.getFirstName());
+        type(By.name("lastname"), contact.getLastName());
+        attach(By.name("photo"), contact.getPhoto());
+        type(By.name("address"), contact.getAddress());
+        type(By.name("home"), contact.getPhoneHome());
+        type(By.name("mobile"), contact.getPhoneMobile());
+        type(By.name("work"), contact.getPhoneWork());
+        type(By.name("email"), contact.getEmail());
+        type(By.name("email2"), contact.getEmail2());
+        type(By.name("email3"), contact.getEmail3());
+        int groupsSize = contact.getGroups().size();
+        if (creation && groupsSize > 0) {
+            if (groupsSize > 1){
+                throw new Exception(String.format("Contact %s has more than one group for Create operation. Cannot choose.", contact));
+            }
+            selectByValue(By.name("new_group"), String.valueOf(contact.getGroups().any().getId()));
+        }
     }
 
     public void submitContactCreation() {
@@ -127,5 +137,44 @@ public class ContactHelper extends HelperBase{
                 .withPhoneHome(home).withPhoneWork(work).withPhoneMobile(mobile)
                 .withEmail(email).withEmail2(email2).withEmail3(email3)
                 .withAddress(address);
+    }
+
+    public void selectGroup(int groupId) {
+        selectByValue(By.name("to_group"), String.valueOf(groupId));
+    }
+
+    public void submitAddingToGroup() {
+        click(By.name("add"));
+    }
+
+    public void AddToGroups(ContactData contact, Groups groups) {
+        for (GroupData group : groups) {
+            selectContact(contact.getId());
+            selectGroup(group.getId());
+            submitAddingToGroup();
+            contactCache = null;
+            navigateToContactsInGroup(group.getName());
+        }
+    }
+
+    private void navigateToContactsInGroup(String groupName) {
+        click(By.linkText(String.format("group page \"%s\"", groupName)));
+    }
+
+    public void DeleteFromGroups(ContactData contact, Set<GroupData> groups) {
+        for (GroupData group : groups) {
+            openContactsInGroup(group.getId());
+            selectContact(contact.getId());
+            submitDeletingFromGroup();
+            navigateToContactsInGroup(group.getName());
+        }
+    }
+
+    private void submitDeletingFromGroup() {
+        click(By.name("remove"));
+    }
+
+    private void openContactsInGroup(int groupId) {
+        selectByValue(By.name("group"), String.valueOf(groupId));
     }
 }

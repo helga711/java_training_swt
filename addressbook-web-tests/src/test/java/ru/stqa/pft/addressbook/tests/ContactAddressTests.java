@@ -10,20 +10,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ContactAddressTests extends TestBase {
 
   @BeforeMethod
-  public void ensurePreconditions() {
+  public void ensurePreconditions() throws Exception {
     app.goTo().baseURL();
-    if (app.contact().all().withAddress().size() == 0) {
+    if (app.db().contacts().withAddress().size() == 0) {
       app.goTo().newContactPage();
       app.contact().create(new ContactData()
               .withFirstName("Test 1")
               .withLastName("Test 2")
-              .withAddress("221B Baker Street\nMarylebone\nLondon UK"));
+              .withAddress("221B Baker Street\r\nMarylebone\r\nLondon UK"));
     }
   }
 
   @Test
   public void testContactAddress() {
-    ContactData contact = app.contact().all().withAddress().any();
+    ContactData contact = app.db().contacts().withAddress().any();
     ContactData contactFromEditForm = app.contact().infoFromEditForm(contact.getId());
     assertThat(String.format("Test address for %s", contact), contact.getAddress(), equalTo(contactFromEditForm.getAddress()));
   }

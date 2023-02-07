@@ -38,14 +38,15 @@ public class ContactCreationTests extends TestBase {
   }
 
   @Test (dataProvider = "validContactsFromXML")
-  public void testContactCreation(ContactData contact) {
+  public void testContactCreation(ContactData contact) throws Exception {
     app.goTo().baseURL();
-    Contacts before = app.contact().all();
-    contact.withPhoto(new File("src/test/resources/images.jpg"));
+    contact.withPhoto(new File("src/test/resources/images.jpg")).inGroup(app.db().groups().any());
+    Contacts before = app.db().contacts();
     app.goTo().newContactPage();
     app.contact().create(contact);
     assertThat("Test contacts quantity.", app.contact().count(), equalTo(before.size() + 1));
-    Contacts after = app.contact().all();
-    assertThat("Test contacts content.", after, equalTo(before.withAdded(contact.withId(after.maxId()))));
+    Contacts after = app.db().contacts();
+    assertThat("Test contacts content.", after, equalTo(before.withAdded(contact.withId(after.maxId()).toDB())));
+    verifyContactListInUI();
   }
 }
