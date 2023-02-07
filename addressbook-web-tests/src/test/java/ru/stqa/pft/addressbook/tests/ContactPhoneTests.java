@@ -11,7 +11,7 @@ public class ContactPhoneTests extends TestBase {
 
   @BeforeMethod
   public void ensurePreconditions() throws Exception {
-    app.goTo().baseURL();
+    app.goToBaseURL();
     if (app.db().contacts().withPhones().size() == 0) {
       app.goTo().newContactPage();
       app.contact().create(new ContactData()
