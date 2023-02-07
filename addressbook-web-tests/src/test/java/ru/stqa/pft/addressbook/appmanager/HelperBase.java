@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
 
@@ -26,6 +27,20 @@ public class HelperBase {
                 driver.findElement(locator).clear();
                 driver.findElement(locator).sendKeys(text);
             }
+        }
+    }
+
+    protected void selectByText(By locator, String text) {
+        if (text != null) {
+            Select select = new Select(driver.findElement(locator));
+            select.selectByVisibleText(text);
+        }
+    }
+
+    protected void selectByValue(By locator, String value) {
+        if (value != null) {
+            Select select = new Select(driver.findElement(locator));
+            select.selectByValue(value);
         }
     }
 

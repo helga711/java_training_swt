@@ -2,25 +2,25 @@
   <contact>
     <firstName>First name 0</firstName>
     <lastName>Last name 0</lastName>
-    <address>address &#xd;
- address 0</address>
+    <address>address address 0</address>
     <phoneHome>555 55 0</phoneHome>
     <email>test0@test.com</email>
+    <groups/>
   </contact>
   <contact>
     <firstName>First name 1</firstName>
     <lastName>Last name 1</lastName>
-    <address>address &#xd;
- address 1</address>
+    <address>address address 1</address>
     <phoneHome>555 55 1</phoneHome>
     <email>test1@test.com</email>
+    <groups/>
   </contact>
   <contact>
     <firstName>First name 2</firstName>
     <lastName>Last name 2</lastName>
-    <address>address &#xd;
- address 2</address>
+    <address>address address 2</address>
     <phoneHome>555 55 2</phoneHome>
     <email>test2@test.com</email>
+    <groups/>
   </contact>
 </list>

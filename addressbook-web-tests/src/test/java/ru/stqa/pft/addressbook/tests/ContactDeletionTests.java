@@ -10,21 +10,23 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ContactDeletionTests extends TestBase {
 
   @BeforeMethod
-  public void ensurePreconditions() {
+  public void ensurePreconditions() throws Exception {
     app.goToBaseURL();
-    if (app.contact().all().size() == 0) {
+    if (app.db().contacts().size() == 0) {
       app.goTo().newContactPage();
       app.contact().create(new ContactData().withFirstName("Test 1"));
     }
   }
 
   @Test
-  public void testContactDeletion() {
-    Contacts before = app.contact().all();
+  public void testContactDeletion(){
+    Contacts before = app.db().contacts();
     ContactData deletedContact = before.any();
     app.contact().delete(deletedContact);
+    app.goTo().baseURL();
     assertThat("Test contacts quantity.", app.contact().count(), equalTo(before.size() - 1));
-    Contacts after = app.contact().all();
+    Contacts after = app.db().contacts();
     assertThat("Test contacts content.", after, equalTo(before.without(deletedContact)));
+    verifyContactListInUI();
   }
 }
