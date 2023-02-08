@@ -24,6 +24,7 @@ public class ApplicationManager {
     private PasswordHelper passwordHelper;
     private SessionHelper sessionHelper;
     private DBHelper dbHelper;
+    private SoapHelper soapHelper;
 
     public ApplicationManager(String browserName) {
         this.browser = browserName;
@@ -100,6 +101,13 @@ public class ApplicationManager {
             dbHelper = new DBHelper();
         }
         return dbHelper;
+    }
+
+    public SoapHelper soap() {
+        if (soapHelper == null) {
+            soapHelper = new SoapHelper(this);
+        }
+        return soapHelper;
     }
 
     public IMailServer mailServer() {

@@ -5,7 +5,7 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="delegatedBuild" value="true" />
-        <option name="testRunner" value="GRADLE" />
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/addressbook-web-tests" />
         <option name="gradleJvm" value="#JAVA_HOME" />
@@ -17,7 +17,7 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="delegatedBuild" value="true" />
-        <option name="testRunner" value="PLATFORM" />
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/mantis-tests" />
         <option name="gradleJvm" value="#JAVA_HOME" />
@@ -29,7 +29,7 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="delegatedBuild" value="true" />
-        <option name="testRunner" value="PLATFORM" />
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/sandbox" />
         <option name="gradleJvm" value="#JAVA_HOME" />

@@ -18,6 +18,10 @@ dependencies {
     testImplementation("io.github.bonigarcia:webdrivermanager:5.3.0")
 }
 
+test {
+    useTestNG()
+}
+
 task testGroups(type: Test) {
     useTestNG(){
         suites 'src/test/resources/testngGroups.xml'

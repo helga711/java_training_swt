@@ -9,6 +9,7 @@ public class RegistrationTests extends MailTestBase {
 
     @Test
     public void testRegistration() throws Exception {
+        skipIfNotFixed(1);
         long now = System.currentTimeMillis();
         User user = new User()
                 .withUsername("user" + now)
