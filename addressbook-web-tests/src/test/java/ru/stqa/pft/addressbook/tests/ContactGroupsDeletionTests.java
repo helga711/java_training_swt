@@ -19,7 +19,7 @@ public class ContactGroupsDeletionTests extends TestBase {
             app.group().create(new GroupData().withName("Test 1"));
         }
 
-        app.goTo().baseURL();
+        app.goToBaseURL();
         if (app.db().contacts().withGroups().size() == 0) {
             GroupData group = app.db().groups().any();
             app.goTo().newContactPage();

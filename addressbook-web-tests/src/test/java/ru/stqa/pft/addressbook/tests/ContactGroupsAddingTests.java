@@ -20,7 +20,7 @@ public class ContactGroupsAddingTests extends TestBase {
             app.group().create(new GroupData().withName("Test " + i));
         }
 
-        app.goTo().baseURL();
+        app.goToBaseURL();
         if (app.db().contacts().withoutGroups().size() == 0) {
             app.goTo().newContactPage();
             app.contact().create(new ContactData()
