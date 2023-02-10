@@ -1,15 +1,21 @@
 package ru.stqa.pft.addressbook.appmanager;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.AbstractDriverOptions;
 import org.openqa.selenium.remote.Browser;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -32,19 +38,34 @@ public class ApplicationManager {
         String target = System.getProperty("target", "local");
         properties.load(new FileReader(String.format("src/test/resources/%s.properties", target)));
 
-        if (browser.equals(Browser.FIREFOX.browserName())) {
-            WebDriverManager.firefoxdriver().setup();
-            driver = new FirefoxDriver();
+        if ("".equals(properties.getProperty("selenium.server"))) {
+            if (browser.equals(Browser.FIREFOX.browserName())) {
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+            } else if (browser.equals(Browser.CHROME.browserName())) {
+                WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver();
+            } else if (browser.equals(Browser.EDGE.browserName())) {
+                WebDriverManager.edgedriver().setup();
+                EdgeOptions edgeOptions = new EdgeOptions();
+                edgeOptions.addArguments("--no-sandbox");
+                driver = new EdgeDriver(edgeOptions);
+            }
         }
-        else if (browser.equals(Browser.CHROME.browserName())) {
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
-        }
-        else if (browser.equals(Browser.EDGE.browserName())) {
-            WebDriverManager.edgedriver().setup();
-            EdgeOptions edgeOptions = new EdgeOptions();
-            edgeOptions.addArguments("--no-sandbox");
-            driver = new EdgeDriver(edgeOptions);
+        else {
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setBrowserName(browser);
+            capabilities.setPlatform(Platform.fromString(System.getProperty("platform", "Windows 10")));
+            URL url = new URL(properties.getProperty("selenium.server"));
+            if (browser.equals(Browser.FIREFOX.browserName())) {
+                WebDriverManager.firefoxdriver().remoteAddress(url).setup();
+            } else if (browser.equals(Browser.CHROME.browserName())) {
+                WebDriverManager.chromedriver().remoteAddress(url).setup();
+            } else if (browser.equals(Browser.EDGE.browserName())) {
+                WebDriverManager.edgedriver().remoteAddress(url).setup();
+            }
+
+            driver = new RemoteWebDriver(url, capabilities);
         }
         driver.manage().timeouts().implicitlyWait(Duration.ZERO);
         goToBaseURL();
