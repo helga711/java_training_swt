@@ -12,7 +12,7 @@ public class User {
     private String mantisPassword;
 
     @Column(name = "email")
-    public String email;
+    private String email;
 
     @Id
     @Column(name = "id")
@@ -46,6 +46,15 @@ public class User {
 
     public User withEmail(String email) {
         this.email = email;
+        return this;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public User withId(int id) {
+        this.id = id;
         return this;
     }
 }
